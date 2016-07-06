@@ -2,7 +2,9 @@
 
 # puts "Hello World"
 
-# require "bundler/setup"
-require "./lib/findthebestfood"
+require "bundler/setup"
+require "findthebestfood"
+
+
 
 FindTheBestFood::CLI.new.call
