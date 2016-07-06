@@ -1,7 +1,7 @@
 class FindTheBestFood::CLI
 
   def call
-    puts "hello"
+    Google::Scraper.scrapRestaurantInfoWith(location:"manhattan, new york", food:"chinese food")
   end
 
 end
