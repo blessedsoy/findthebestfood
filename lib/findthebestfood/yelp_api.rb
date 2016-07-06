@@ -1,24 +1,25 @@
-
-require 'yelp'
+require "yelp"
 require 'pry'
 
 class FindTheBestFood::YelpApi
 
-  attr_reader :client, :restaurants, :locale
+  attr_reader :client, :restaurants, :locale, :result, :food, :location, :params
 
-  def self.start(client = nil, restaurants = nil, locale = nil)
-    client = Yelp::Client.new({ consumer_key: 'Jaece9RDbUKrTOqyY8BKWA',
+  def initialize(food, location)
+    @client = Yelp::Client.new({ consumer_key: 'Jaece9RDbUKrTOqyY8BKWA',
                                 consumer_secret: 'R5k8K7leYQcUYueOc1trD790LSY',
                                 token: 'PdikQoKuDU9t4aW8WQ7Q0dmR2mjO24vK',
                                 token_secret: 'CHEdmNqsXLTYAXtNw0ugLNX9SmQ'
                               })
-    restaurants = Hash.new{|k, v| k[v] = {}}
-    locale = { cc: 'US', lang: 'en'}
+   
+    @locale = { cc: 'US', lang: 'en'}
+    @food = food
+    @location = location
+    # restaurants_info
   end
 
-
-  def self.params
-    params = { term: 'Pad Thai',
+  def params
+    @params = { term: @food,
                sort: 2,
                category_filter: 'restaurants',
                radius_filter: 1500
@@ -26,21 +27,10 @@ class FindTheBestFood::YelpApi
   end
 
 
-  def self.search
-    client.search('Midtown West, nyc', @params, @locale).businesses.each do |place|
-  restaurants[place.name] = {
-      :review_count => place.review_count,
-      :rating => place.rating,
-      :phone => place.phone
-  }
-    end
+  def restaurants_info
+    results = @client.search(@location, self.params, @locale).businesses
   end
 
-  def self.sort
-   restaurants.sort_by {|restaurant, element| element[:rating]}.reverse
-   result = restaurants.sort_by {|restaurant, element| element[:review_count]}.reverse
-   puts result
-  end
 
 end
 
