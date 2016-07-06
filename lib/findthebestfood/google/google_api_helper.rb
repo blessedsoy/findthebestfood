@@ -1,6 +1,7 @@
 class Google::URIHelper
 
 	CLIENT_KEY = 'AIzaSyC1NNKu1rO9MK6lm3SuhhhEEmgJx3PEpU4'
+	DETAIL_URI = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC1NNKu1rO9MK6lm3SuhhhEEmgJx3PEpU4&placeid="
 
 	attr_reader :client, :restaurants, :location, :food
 
@@ -24,20 +25,32 @@ private
 
 	def _parseRestaurantInfo(restaurants)
 		restaurants.collect do |restaurant|
-			# binding.pry
-			name = restaurant.name
-			rh = {}
-			rh[name] = {}
-			rh[name][:rating] = restaurant.rating || 0
-			rh[name][:price] = restaurant.price_level || 0
-			rh[name][:address] = restaurant.formatted_address || ""
-			rh[name][:phone] = restaurant.formatted_phone_number || ""
-			rh[name][:opening_hours] = {
-				'open_now': restaurant.opening_hours[:open_now],
-				'weekday': restaurant.opening_hours[:weekday_text] # => []
-			}
-			rh
+			binding.pry
+			_generateRestaurantInfoHash(restaurant)
 		end
+	end
+
+	def _getRestaurantDetailWith(place_id)
+		# binding.pry
+		request_uri = DETAIL_URI + place_id
+		resp = Net::HTTP.get_response(URI.parse(request_uri))
+		body = JSON.parse(resp.body)
+		body['result']
+	end
+
+	def _generateRestaurantInfoHash(restaurant)
+		name = restaurant.name
+		rh = {}
+		rh[name] = {}
+		rh[name][:rating] = restaurant.rating || 0
+		rh[name][:price] = restaurant.price_level || 0
+		rh[name][:address] = restaurant.formatted_address || ""
+		detail = _getRestaurantDetailWith(restaurant.place_id)
+		rh[name][:phone] = detail['formatted_phone_number']
+		rh[name][:reviews] = detail['reviews'].count
+		rh[name][:opening_now] = detail['opening_hours']['open_now']
+		rh
+
 	end
 
 

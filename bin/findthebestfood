@@ -5,6 +5,4 @@
 
 require "./lib/findthebestfood"
 
-
-
 FindTheBestFood::CLI.new.call
