@@ -2,11 +2,11 @@ require 'open-uri'
 require 'nokogiri'
 require 'pry'
 
-require "findthebestfood/version"
-require "findthebestfood/yelp_api"
-require "findthebestfood/google_api"
-require "findthebestfood/cli"
+require_relative "findthebestfood/version"
+require_relative "findthebestfood/yelp_api"
+require_relative "findthebestfood/google_api"
+require_relative "findthebestfood/cli"
 
-module Findthebestfood
-  # Your code goes here...
-end
+# module FindTheBestFood
+#   # Your code goes here...
+# end

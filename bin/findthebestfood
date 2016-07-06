@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
-require "findthebestfood"
+# puts "Hello World"
+
+# require "bundler/setup"
+require "./lib/findthebestfood"
 
 FindTheBestFood::CLI.new.call
