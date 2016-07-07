@@ -6,8 +6,9 @@ source 'https://rubygems.org'
 # gem 'yelp', require: 'yelp'
 
 gem 'google_places'
+gem 'json'
 gem 'nokogiri'
 gem 'pry'
 gem 'certified'
 gem 'yelp'
-
+gem 'openssl'
