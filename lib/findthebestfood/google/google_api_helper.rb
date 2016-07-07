@@ -24,12 +24,14 @@ private
 	end
 
 	def _parseRestaurantInfo(restaurants)
-
+		hash = {}
+		
 		results = restaurants.collect do |restaurant|
-			_generateRestaurantInfoHash(restaurant)
+			data_h = _generateRestaurantInfoHash(restaurant)
+			name = restaurant.name
+			hash[name] = data_h[name]
 		end
-
-		Hash[*results]
+		hash
 	end
 
 
