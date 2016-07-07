@@ -15,7 +15,6 @@ class FindTheBestFood::YelpApi
     @locale = { cc: 'US', lang: 'en'}
     @food = food
     @location = location
-    # restaurants_info
   end
 
   def params
@@ -29,6 +28,7 @@ class FindTheBestFood::YelpApi
 
   def restaurants_info
     results = @client.search(@location, self.params, @locale).businesses
+    # binding.pry
   end
 
 
