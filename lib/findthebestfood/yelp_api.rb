@@ -3,7 +3,7 @@ require 'pry'
 
 class FindTheBestFood::YelpApi
 
-  attr_reader :client, :restaurants, :locale, :result, :food, :location, :params
+  attr_reader :client, :restaurants, :locale, :result, :food, :location
 
   def initialize(food, location)
     @client = Yelp::Client.new({ consumer_key: 'Jaece9RDbUKrTOqyY8BKWA',
