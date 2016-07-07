@@ -27,7 +27,7 @@ class FindTheBestFood::YelpApi
 
 
   def restaurants_info
-    results = @client.search(@location, self.params, @locale).businesses
+    client.search(location, self.params, locale).businesses
     # binding.pry
   end
 
