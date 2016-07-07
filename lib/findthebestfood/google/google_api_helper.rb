@@ -6,49 +6,43 @@ class Google::URIHelper
 	attr_reader :client, :restaurants, :location, :food
 
 	def initialize
-		@client = GooglePlaces::Client.new('AIzaSyC1NNKu1rO9MK6lm3SuhhhEEmgJx3PEpU4')
+		@client = GooglePlaces::Client.new(CLIENT_KEY)
 	end
 
 
 	def top10RestaurantInfoWith(location:, food:)
 		@location = location
 		@food = food
-		results = _requestTop10RestaurantInfo
+		_requestTop10RestaurantInfo # => [Restaurant objects]
 	end
 
 private
 	def _requestTop10RestaurantInfo
-		results = @client.spots_by_query(@food + ", " + @location, :types => ['restaurant', 'food'])
+		results = client.spots_by_query(food + ", " + location, :types => ['restaurant', 'food'])
 											.sort {|a, b| b[:rating] <=> a[:rating]}[1..10]
+												
 		_parseRestaurantInfo(results)
 	end
 
 	def _parseRestaurantInfo(restaurants)
-		hash = {}
-		
-		results = restaurants.collect do |restaurant|
-			data_h = _generateRestaurantInfoHash(restaurant)
-			name = restaurant.name
-			hash[name] = data_h[name]
+		restaurants.collect do |restaurant|
+			_generateRestaurantInfoHash(restaurant) # => Restaurant object
 		end
-		hash
+		# => [Restaurant objects]
 	end
 
 
-
 	def _generateRestaurantInfoHash(restaurant)
-		name = restaurant.name
 		rh = {}
-		rh[name] = {}
-		rh[name][:rating] = restaurant.rating || 0
-		rh[name][:price] = restaurant.price_level || 0
-		rh[name][:address] = restaurant.formatted_address || ""
+		rh[:name] = restaurant.name
+		rh[:rating] = restaurant.rating || 0
+		rh[:price] = restaurant.price_level || 0
+		rh[:address] = restaurant.formatted_address || ""
 		detail = _getRestaurantDetailWith(restaurant.place_id)
-		rh[name][:phone] = detail['formatted_phone_number']
-		# rh[name][:reviews] = detail['reviews'].count 
-		detail['opening_hours'] ? rh[name][:opening_now] = detail['opening_hours']['open_now'] : rh[name][:opening_now] = ""
-		rh
+		rh[:phone] = detail['formatted_phone_number'] || 0
+		rh[:opening_hours] = detail['opening_hours'] || ""
 
+		restaurant = Restaurant.new(rh)
 	end
 
 		def _getRestaurantDetailWith(place_id)
