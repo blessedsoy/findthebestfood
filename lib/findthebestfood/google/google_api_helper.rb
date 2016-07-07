@@ -24,6 +24,7 @@ private
 	end
 
 	def _parseRestaurantInfo(restaurants)
+
 		results = restaurants.collect do |restaurant|
 			_generateRestaurantInfoHash(restaurant)
 		end
@@ -48,8 +49,8 @@ private
 		rh[name][:address] = restaurant.formatted_address || ""
 		detail = _getRestaurantDetailWith(restaurant.place_id)
 		rh[name][:phone] = detail['formatted_phone_number']
-		rh[name][:reviews] = detail['reviews'].count
-		rh[name][:opening_now] = detail['opening_hours']['open_now']
+		# rh[name][:reviews] = detail['reviews'].count 
+		detail['opening_hours'] ? rh[name][:opening_now] = detail['opening_hours']['open_now'] : rh[name][:opening_now] = ""
 		rh
 
 	end
