@@ -25,7 +25,6 @@ private
 
 	def _parseRestaurantInfo(restaurants)
 		restaurants.collect do |restaurant|
-			binding.pry
 			_generateRestaurantInfoHash(restaurant)
 		end
 	end

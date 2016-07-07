@@ -49,7 +49,7 @@ class FindTheBestFood::Zagat
         results.css("h3").each do |name|
           restaurant_name = name.text
             results.css("div.info div.text-stats, span.i-number.i-number-red").each do |rating|
-              restaurant_rating = rating.text.to_i * 5 / 30
+              restaurant_rating = (rating.text.to_i * 5 / 30).round(2)
                 results.css("div.info div.text-stats, span.i-number").each do |cost|
                   restaurant_cost = cost.text if cost.text.include?('$')
                     restaurants[restaurant_name] = {rating: restaurant_rating, cost: restaurant_cost}
@@ -57,7 +57,11 @@ class FindTheBestFood::Zagat
             end
         end
       end
-      restaurants = restaurants.sort_by {|restaurant, element| element[:rating]}.reverse
-      restaurants
+      restaurants = restaurants.sort_by {|restaurant, element| element[:rating]}
+      results = {}
+      restaurants.each do |restaurant|
+        results[restaurant[0]] = restaurant[1]
+      end
+      results
   end
 end

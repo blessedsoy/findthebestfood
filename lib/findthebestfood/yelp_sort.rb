@@ -12,7 +12,12 @@ class FindTheBestFood::YelpSort
       :phone => place.phone
      }
     end
-    final_results = @restaurants.sort_by {|restaurant, element| element[:review_count]}.reverse
+    @restaurants = @restaurants.sort_by {|restaurant, element| element[:rating]}.reverse
+          results = {}
+      @restaurants.each do |restaurant|
+        results[restaurant[0]] = restaurant[1]
+      end
+      results
   end
 
 end
