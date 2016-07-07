@@ -8,4 +8,7 @@ class FindTheBestFood::CLI
     puts FindTheBestFood::Zagat.scrape('pad thai', 'midtown west')
   end
 
+
+
 end
+

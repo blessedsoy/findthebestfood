@@ -10,4 +10,4 @@ gem 'nokogiri'
 gem 'pry'
 gem 'certified'
 gem 'yelp'
-
+gem 'openssl'
