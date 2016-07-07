@@ -2,10 +2,11 @@ class FindTheBestFood::CLI
 
   def call
     puts FindTheBestFood::YelpSort.find_by_yelp('pad thai', 'midtown west, manhattan')
-    puts FindTheBestFood::Zagat.results('pad thai', 'midtown west')
+
     results = Google::Scraper.scrapRestaurantInfoWith(location:"midtown west, manhattan", food:"pad thai")
-    binding.pry
+    # binding.pry
     puts results
+        puts FindTheBestFood::Zagat.results('pad thai', 'midtown west')
   end
 
   # def sort(food, location)
