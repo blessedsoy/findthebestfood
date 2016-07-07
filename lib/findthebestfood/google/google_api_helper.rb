@@ -24,10 +24,11 @@ private
 	end
 
 	def _parseRestaurantInfo(restaurants)
-		restaurants.collect do |restaurant|
-			binding.pry
+		results = restaurants.collect do |restaurant|
 			_generateRestaurantInfoHash(restaurant)
 		end
+
+		Hash[*results]
 	end
 
 	def _getRestaurantDetailWith(place_id)
