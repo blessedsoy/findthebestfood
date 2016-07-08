@@ -27,10 +27,30 @@ class FindTheBestFood::YelpApi
 
 
   def restaurants_info
-    client.search(location, self.params, locale).businesses
+    yelp = @client.search(location, self.params, locale).businesses
     # binding.pry
+    sort_yelp(yelp)
   end
 
+  def sort_yelp(data)    
+    result = data.collect do |place| 
+      self.each_restaurant(place)
+    end
+    result.sort {|a,  b| b.rating <=> a.rating}
+  end
+
+  def each_restaurant(place)
+
+    restaurant = Hash.new({})
+    restaurant[:name] = place.name
+    restaurant[:reviews] = place.review_count
+    restaurant[:rating] = place.rating
+    restaurant[:phone] = place.phone
+    restaurant[:address] = place.location.display_address[0]
+ 
+    yelp_restaurant = Restaurant.new(restaurant)
+
+  end
 
 end
 
