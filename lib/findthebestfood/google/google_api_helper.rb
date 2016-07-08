@@ -19,7 +19,9 @@ class Google::URIHelper
 private
 	def _requestTop10RestaurantInfo
 		results = client.spots_by_query(food + ", " + location, :types => ['restaurant', 'food'])
-											.sort {|a, b| b[:rating] <=> a[:rating]}[1..10]
+											results.sort {|a, b| 
+													binding.pry
+												b.rating <=> a.rating}[1..10]
 												
 		_parseRestaurantInfo(results)
 	end
@@ -36,7 +38,7 @@ private
 		rh = {}
 		rh[:name] = restaurant.name
 		rh[:rating] = restaurant.rating || 0
-		rh[:price] = restaurant.price_level || 0
+		rh[:price_level] = restaurant.price_level || 0
 		rh[:address] = restaurant.formatted_address || ""
 		detail = _getRestaurantDetailWith(restaurant.place_id)
 		rh[:phone] = detail['formatted_phone_number'] || 0
