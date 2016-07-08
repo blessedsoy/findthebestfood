@@ -3,7 +3,8 @@ class FindTheBestFood::YelpSort
 
   def self.find_by_yelp(food, location)
     yelp = FindTheBestFood::YelpApi.new(food, location).restaurants_info
-    @restaurants = Hash.new{|k, v| k[v] = {}}
+    # @restaurants = Hash.new{|k, v| k[v] = {}}
+    @restaurants = Hash.new({})
 
     yelp.each do |place| 
       @restaurants[place.name] = {
