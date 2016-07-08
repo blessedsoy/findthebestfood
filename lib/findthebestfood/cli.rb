@@ -1,11 +1,58 @@
 class FindTheBestFood::CLI
   attr_reader :google, :yelp
+
+  LOCATION = {
+    1 => "Midtown West",
+    2 => "Midtown East",
+    3 => "Upper West",
+    4 => "Upper East",
+    5 => "Chelsea Flatiron",
+    6 => "Murray Hill / Gramercy",
+    7 => "West Village / Greenwinch Village",
+    8 => "Soho / Fribeca / Chinatown",
+    9 => "Financial District / Battery Park City",
+    10 => "Lower East Side / East Village",
+    11 => "Harlem / East Harlem / Morningside Heights"
+  }
+
   def call#(location:, food:)
   	# # sort(food, location)
-  	results = sort("pasta", "midtown west, manhattan")
-  	puts results
-    binding.pry
+  	self.menu
   	# => [Restaurant objects] 
+  end
+
+  def menu
+    puts "Welcome to FindTheBestFood in NYC!"
+    puts "What kind of food do you want?"
+    food = gets.strip
+    puts "Choose your location (1-11):\n
+    1. Midtown West\n
+    2. Midtown East\n
+    3. Upper West\n
+    4. Upper East\n
+    5. Chelsea Flatiron\n
+    6. Murray Hill / Gramercy\n
+    7. West Village / Greenwinch Village\n
+    8. Soho / Fribeca / Chinatown\n
+    9. Financial District / Battery Park City\n
+    10. Lower East Side / East Village\n
+    11. Harlem / East Harlem / Morningside Heights"
+    key = gets.strip.to_i
+    location = LOCATION[key]
+
+    best_choices = sort(food, location)
+    
+    best_choices.each {|name, info| 
+      puts "#{name}:\n
+         Address: #{info[:address]}\n
+         Phone: #{info[:phone]}\n
+         Rating: #{info[:rating]}\n
+         Reviews: #{info[:reviews]}\n
+         Open now: #{info[:open_now]}\n
+         Opening hours: #{info[:opening_hours]}"
+      puts "========================================="
+    }
+
   end
 
 
@@ -17,7 +64,7 @@ class FindTheBestFood::CLI
     # zagat = FindTheBestFood::Zagat.results(food, location)
     restaurants = []
     restaurants = @google + @yelp
-    binding.pry
+
     results_to_users = {}  # => {name: {info}, name: {info}}
   	restaurants.each do |restaurant|
   		restaurant.name = restaurant.name.gsub(/(?<=[a-z])(?=[A-Z])/, ' ')
@@ -29,6 +76,7 @@ class FindTheBestFood::CLI
         results_to_users[restaurant.name][:reviews] = restaurant.reviews if restaurant.reviews
 
   		else
+        # binding.pry
         if in_all?(restaurant)
           weekday_text = "Unavailable"
           open_now = "Unavailable"
@@ -52,9 +100,11 @@ class FindTheBestFood::CLI
   end
 
   def in_all?(restaurant)
+
     in_google = false
     @google.each do |google_r|
       if restaurant.name == google_r.name
+        # binding.pry
         in_google = true
       end
     end
@@ -62,6 +112,7 @@ class FindTheBestFood::CLI
     in_yelp = false
     @yelp.each do |yelp_r|
       if restaurant.name == yelp_r.name
+        # binding.pry
         in_yelp = true
       end
     end

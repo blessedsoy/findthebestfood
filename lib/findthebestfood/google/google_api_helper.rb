@@ -1,7 +1,7 @@
 class Google::URIHelper
 
-	CLIENT_KEY = 'AIzaSyC1NNKu1rO9MK6lm3SuhhhEEmgJx3PEpU4'
-	DETAIL_URI = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC1NNKu1rO9MK6lm3SuhhhEEmgJx3PEpU4&placeid="
+	CLIENT_KEY = 'AIzaSyDakL5ukgLpqlwqX9MUIzohu63mN9O-hqg'#'AIzaSyC1NNKu1rO9MK6lm3SuhhhEEmgJx3PEpU4'
+	DETAIL_URI = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDakL5ukgLpqlwqX9MUIzohu63mN9O-hqg&placeid="
 
 	attr_reader :client, :restaurants, :location, :food
 
@@ -18,11 +18,10 @@ class Google::URIHelper
 
 private
 	def _requestTop10RestaurantInfo
-		results = client.spots_by_query(food + ", " + location, :types => ['restaurant', 'food'])
-											results.sort {|a, b| 
-													binding.pry
-												b.rating <=> a.rating}[1..10]
-												
+		# binding.pry
+		results = self.client.spots_by_query(self.food + ", " + self.location, :types => ['restaurant', 'food'])
+						.sort {|a, b| b.rating <=> a.rating}[1..10]
+		# binding.pry
 		_parseRestaurantInfo(results)
 	end
 
@@ -41,7 +40,8 @@ private
 		rh[:price_level] = restaurant.price_level || 0
 		rh[:address] = restaurant.formatted_address || ""
 		detail = _getRestaurantDetailWith(restaurant.place_id)
-		rh[:phone] = detail['formatted_phone_number'] || 0
+		# binding.pry
+		rh[:phone] = detail['formatted_phone_number'] || 0 
 		rh[:opening_hours] = detail['opening_hours'] || ""
 
 		restaurant = Restaurant.new(rh)
