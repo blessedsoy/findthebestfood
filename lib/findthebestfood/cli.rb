@@ -9,12 +9,12 @@ class FindTheBestFood::CLI
         puts FindTheBestFood::Zagat.results('pad thai', 'midtown west')
   end
 
-  # def sort(food, location)
-  #   FindTheBestFood::YelpSort.find_by_yelp(food, location)
-  #   FindTheBestFood::Zagat.results(food, location)
-  #   Google::Scraper.scrapRestaurantInfoWith(location:location, food:food)
-  #   array = []
-  # end
+  def sort(food, location)
+    yelp = FindTheBestFood::YelpSort.find_by_yelp(food, location)
+    google = Google::Scraper.scrapRestaurantInfoWith(location:location, food:food)
+    zagat = FindTheBestFood::Zagat.results(food, location)
+    array = []
+  end
 
 end
 
