@@ -4,8 +4,8 @@ class FindTheBestFood::CLI
   LOCATION = {
     1 => "Midtown West",
     2 => "Midtown East",
-    3 => "Upper West",
-    4 => "Upper East",
+    3 => "Upper West Side",
+    4 => "Upper East Side",
     5 => "Chelsea Flatiron",
     6 => "Murray Hill / Gramercy",
     7 => "West Village / Greenwinch Village",
@@ -28,8 +28,8 @@ class FindTheBestFood::CLI
     puts "Choose your location (1-11):\n
     1. Midtown West\n
     2. Midtown East\n
-    3. Upper West\n
-    4. Upper East\n
+    3. Upper West Side\n
+    4. Upper East Side\n
     5. Chelsea Flatiron\n
     6. Murray Hill / Gramercy\n
     7. West Village / Greenwinch Village\n
@@ -39,17 +39,31 @@ class FindTheBestFood::CLI
     11. Harlem / East Harlem / Morningside Heights"
     key = gets.strip.to_i
     location = LOCATION[key]
+    puts "LOADING...........\n
+    "
+    best_choices = sort(food, location).max(10)
 
-    best_choices = sort(food, location)
-    
     best_choices.each {|name, info| 
       puts "#{name}:\n
          Address: #{info[:address]}\n
          Phone: #{info[:phone]}\n
          Rating: #{info[:rating]}\n
          Reviews: #{info[:reviews]}\n
-         Open now: #{info[:open_now]}\n
-         Opening hours: #{info[:opening_hours]}"
+         Open now: #{info[:open_now]}
+         "
+          if info[:opening_hours].size > 0
+            info[:opening_hours].each_with_index do |hour, index|
+              if index == 0 
+                puts "         Opening hours: #{hour}"
+              else
+                puts "                        #{hour}"
+              end
+            
+            end
+          else
+            puts "         Opening hours: Unavailable"
+          end
+
       puts "========================================="
     }
 
@@ -60,7 +74,7 @@ class FindTheBestFood::CLI
   def sort(food, location)
     @google = Google::Scraper.scrapRestaurantInfoWith(location:location, food:food)
     @yelp = FindTheBestFood::YelpSort.find_by_yelp(food, location)
-
+# binding.pry
     # zagat = FindTheBestFood::Zagat.results(food, location)
     restaurants = []
     restaurants = @google + @yelp
@@ -72,15 +86,16 @@ class FindTheBestFood::CLI
 
         # name = restaurant.name.gsub(/(?<=[a-z])(?=[A-Z])/, ' ')
   			total_rating = results_to_users[restaurant.name][:rating] + restaurant.rating
-  			results_to_users[restaurant.name][:rating] = total_rating / 2
+  			results_to_users[restaurant.name][:rating] = (total_rating / 2).round(1)
         results_to_users[restaurant.name][:reviews] = restaurant.reviews if restaurant.reviews
 
   		else
         # binding.pry
         if in_all?(restaurant)
-          weekday_text = "Unavailable"
+          weekday_text = []
           open_now = "Unavailable"
-          if restaurant.opening_hours
+          if restaurant.opening_hours && restaurant.opening_hours.size > 0
+           
             weekday_text = restaurant.opening_hours["weekday_text"]
             open_now = restaurant.opening_hours["open_now"]
           end
@@ -97,6 +112,7 @@ class FindTheBestFood::CLI
   		end
   	end
     results_to_users.sort_by {|k, v| v[:rating]}.reverse.to_h
+
   end
 
   def in_all?(restaurant)
@@ -117,7 +133,7 @@ class FindTheBestFood::CLI
       end
     end
 
-    in_google && in_yelp
+    in_google || in_yelp  
   end
  
 end
