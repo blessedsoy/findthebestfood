@@ -22,7 +22,9 @@ class FindTheBestFood::CLI
   end
 
   def menu
-    puts "Welcome to FindTheBestFood in NYC!"
+    puts "
+    Welcome to FindTheBestFood in NYC!
+    "
     puts "What kind of food do you want?"
     food = gets.strip
     puts "Choose your location (1-11):\n
@@ -64,7 +66,7 @@ class FindTheBestFood::CLI
             puts "         Opening hours: Unavailable"
           end
 
-      puts "========================================="
+      puts "================================================================="
     }
 
   end
