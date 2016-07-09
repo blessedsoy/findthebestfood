@@ -43,7 +43,7 @@ class FindTheBestFood::CLI
     location = LOCATION[key]
     puts "LOADING...........\n
     "
-    best_choices = sort(food, location).max(10)
+    best_choices = sort(food, location).sort {|a, b| b[1][:rating] <=> a[1][:rating] }[0..9].to_h#.max(10)
 
     best_choices.each {|name, info| 
       puts "#{name}:\n
@@ -113,7 +113,8 @@ class FindTheBestFood::CLI
         end
   		end
   	end
-    results_to_users.sort_by {|k, v| v[:rating]}.reverse.to_h
+    results_to_users
+      # binding.pry
 
   end
 
