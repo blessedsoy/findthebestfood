@@ -9,7 +9,7 @@ class FindTheBestFood::CLI
     5 => "Chelsea Flatiron",
     6 => "Murray Hill / Gramercy",
     7 => "West Village / Greenwinch Village",
-    8 => "Soho / Fribeca / Chinatown",
+    8 => "Soho / Tribeca / Chinatown",
     9 => "Financial District / Battery Park City",
     10 => "Lower East Side / East Village",
     11 => "Harlem / East Harlem / Morningside Heights"
