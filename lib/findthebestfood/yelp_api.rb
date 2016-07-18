@@ -1,17 +1,26 @@
 require "yelp"
 require 'pry'
+require 'json'
 
 class FindTheBestFood::YelpApi
+  file = File.read('info.json')
+  data = JSON.parse(file)
+
+  CONSUMER_KEY = data['Client']['consumer_key']
+  CONSUMER_SECRET = data['Client']['consumer_secret']
+  TOKEN = data['Client']['token']
+  TOKEN_SECRET = data['Client']['token_secret']
 
   attr_reader :client, :restaurants, :locale, :result, :food, :location
 
   def initialize(food, location)
-    @client = Yelp::Client.new({ consumer_key: 'Jaece9RDbUKrTOqyY8BKWA',
-                                consumer_secret: 'R5k8K7leYQcUYueOc1trD790LSY',
-                                token: 'PdikQoKuDU9t4aW8WQ7Q0dmR2mjO24vK',
-                                token_secret: 'CHEdmNqsXLTYAXtNw0ugLNX9SmQ'
+    
+    @client = Yelp::Client.new({ consumer_key: CONSUMER_KEY,
+                                consumer_secret: CONSUMER_SECRET,
+                                token: TOKEN,
+                                token_secret: TOKEN_SECRET
                               })
-   
+    
     @locale = { cc: 'US', lang: 'en'}
     @food = food
     @location = location

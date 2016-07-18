@@ -46,7 +46,7 @@ class FindTheBestFood::CLI
     best_choices = sort(food, location).sort {|a, b| b[1][:rating] <=> a[1][:rating] }[0..9].to_h#.max(10)
 
     best_choices.each {|name, info| 
-      puts "#{name}:\n
+      puts "  #{name}:\n
          Address: #{info[:address]}\n
          Phone: #{info[:phone]}\n
          Rating: #{info[:rating]}\n

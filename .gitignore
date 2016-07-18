@@ -7,3 +7,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+info.json
+
+# Ignore application configuration
+
+

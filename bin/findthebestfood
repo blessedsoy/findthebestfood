@@ -6,4 +6,3 @@ require "./lib/findthebestfood.rb"
 
 
 FindTheBestFood::CLI.new.call
-

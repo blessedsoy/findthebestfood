@@ -1,7 +1,11 @@
+require 'json'
+
 class Google::URIHelper
 
-	CLIENT_KEY = 'AIzaSyDS_X7W7DAjVePHgYX740LwyC8y053Sqz4'#'AIzaSyCwi3iPa_e1zaxveQqkNfxjv8eyuCBjY-U'#'AIzaSyDakL5ukgLpqlwqX9MUIzohu63mN9O-hqg'#'AIzaSyC1NNKu1rO9MK6lm3SuhhhEEmgJx3PEpU4'
-	DETAIL_URI = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyDS_X7W7DAjVePHgYX740LwyC8y053Sqz4&placeid="
+	file = File.read('info.json')
+	data = JSON.parse(file)
+	CLIENT_KEY = data["CLIENT_KEY"][0]
+	DETAIL_URI = "https://maps.googleapis.com/maps/api/place/details/json?key=#{CLIENT_KEY}&placeid="
 
 	attr_reader :client, :restaurants, :location, :food
 
