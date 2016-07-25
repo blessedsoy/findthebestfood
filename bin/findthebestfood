@@ -2,7 +2,7 @@
 
 
 # require "bundler/setup"
-require "./lib/findthebestfood.rb"
+require_relative "../lib/findthebestfood.rb"
 
 
 FindTheBestFood::CLI.new.call

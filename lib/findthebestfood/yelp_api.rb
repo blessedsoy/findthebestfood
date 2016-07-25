@@ -11,9 +11,9 @@ class FindTheBestFood::YelpApi
   TOKEN = data['Client']['token']
   TOKEN_SECRET = data['Client']['token_secret']
 
-  attr_reader :client, :restaurants, :locale, :result, :food, :location
+  attr_reader :client, :restaurants, :locale, :food, :location, :params
 
-  def initialize(food, location)
+  def initialize(food:, location:)
     
     @client = Yelp::Client.new({ consumer_key: CONSUMER_KEY,
                                 consumer_secret: CONSUMER_SECRET,
@@ -36,15 +36,18 @@ class FindTheBestFood::YelpApi
 
 
   def restaurants_info
-    yelp = @client.search(self.location+", manhattan", self.params, locale).businesses
+    yelp = @client.search(self.location+", manhattan", self.params, self.locale).businesses  #restaurant objects
     # binding.pry
-    sort_yelp(yelp)
+    sort_yelp(yelp) #Restaurant instances
+    
   end
 
-  def sort_yelp(data)    
+  def sort_yelp(data) 
+
     result = data.collect do |place| 
-      self.each_restaurant(place)
+    each_restaurant(place)  #Restaurant object
     end
+
     result.sort {|a,  b| b.rating <=> a.rating}
   end
 

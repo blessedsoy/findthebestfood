@@ -6,7 +6,6 @@ end
 require 'open-uri'
 require 'nokogiri'
 require 'pry'
-require 'dotenv'
 
 
 require_relative "findthebestfood/version"
